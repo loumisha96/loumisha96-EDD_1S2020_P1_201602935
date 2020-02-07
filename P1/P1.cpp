@@ -1,4 +1,4 @@
-
+#include <curses.h>
 #include <iostream>
 
 int main()
