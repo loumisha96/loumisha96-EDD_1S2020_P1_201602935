@@ -8,15 +8,12 @@ public:
 	string nombre;
 	string ruta;
 	nodo* sig;
-	nodo() {
-		this->nombre = "";
-		this->ruta = "";
+	nodo(string nombre, string ruta) {
+		this->nombre = nombre;
+		this->ruta = ruta;
 		this->sig = 0;
 	};
-	void setNombreArchivo(string nombre, string archivo) {
-		this->nombre = nombre;
-		this->ruta = archivo;
-	}
+	
 	string getNombre() {
 		return this->nombre;
 	}
@@ -31,11 +28,11 @@ class ListaCircular {
 		this->ultimo = 0;
 	}
 	void insertar(string nombre, string ruta) {
-		nodo* nuevo = new nodo();
+		nodo* nuevo = new nodo(nombre, ruta);
 		ultimo->sig = nuevo;
 		nuevo->sig = ultimo->sig;
 		ultimo = nuevo;
-		ultimo->setNombreArchivo(nombre, ruta);
+	
 
 	};
 };

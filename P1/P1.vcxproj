@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="ListaCircular.cpp" />
     <ClCompile Include="ListaDoble.cpp" />
+    <ClCompile Include="ListaSimple.cpp" />
     <ClCompile Include="P1.cpp" />
     <ClCompile Include="PilaCambios.cpp" />
   </ItemGroup>
