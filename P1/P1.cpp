@@ -1,10 +1,10 @@
-//#include <curses.h>
+#include <curses.h>
 #include <iostream>
 #include "ListaSimple.cpp"
 int main()
 {
 	int entrada;
-	cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
+	cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" <<endl;
 	cout << "FACULTAD DE INGENIERIA "<<endl;
 	cout << "ESTRUCTURA DE DATOS " << endl;
 	cout << "PRACTICA 1 " << endl;
@@ -20,7 +20,9 @@ int main()
 	
 	switch (entrada) {
 	case 1:
-		intiscr();
+		//initscr();
+		//WINDOW *win = newwin(20, 60, 0, 0);
+	
 		break;
 	case 2:
 		break;
