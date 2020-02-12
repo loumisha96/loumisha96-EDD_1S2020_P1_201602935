@@ -27,7 +27,7 @@ public:
 		primero = 0;
 	}
 	bool vacia() {
-		return primero = 0;
+		return primero == 0;
 	}
 	void insertarOrdenadaBuscar(char buscar, string reemplazar) {
 		/*nodo* nuevo = new nodo();
@@ -71,7 +71,7 @@ public:
 	}
 	void print() {
 		nodo* aux = primero;
-		while (aux->sig == 0) {
+		while (aux->sig != 0) {
 			cout << aux->buscar << endl;
 			aux = aux->sig;
 		}
