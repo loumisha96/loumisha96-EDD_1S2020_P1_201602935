@@ -1,0 +1,7 @@
+digraph G{
+rankdir = LR;
+node[shape = record]; 
+[label="{<ref>|<data>lazar!)      ^c(Reportes)      ^s(Guardar)->1
+label="{<ref>|<data>lazar!)      ^c(Reportes)      ^s(Guardar)>2
+abel="{<ref>|<data>lazar!)      ^c(Reportes)      ^s(Guardar)3
+bel="{<ref>|<data>lazar!)      ^c(Reportes)      ^s(Guardar)4

@@ -32,16 +32,22 @@ public:
 	}
 
 };
+
+
 class Pila {
 public:
 	nodo* primero;
+	
 	Pila() {
 		primero = 0;
 	}
+	
 	bool vacia() {
 		return primero = 0;
 	}
+	
 	//insertar para buscar y reemplazar
+	
 	void pushSearch(string wordsearch, string wordreplace) {
 		nodo* aux = new nodo();
 		aux->sig = primero;
@@ -50,11 +56,13 @@ public:
 		primero->setEstado(false);//preguntar
 
 	}
+	
 	void pop() {
 		nodo* aux = primero;
 		primero = aux->sig;
 		aux->sig = 0;
 	}
+	
 	void pushEditar(string wordsearch, string wordreplace) {
 		nodo* aux = new nodo();
 		aux->sig = primero;

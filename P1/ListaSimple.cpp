@@ -3,12 +3,12 @@
 
 using namespace std;
 
-class nodo {
+class nodoP {
 public:
 	string buscar;
 	string reemplazar;
-	nodo *sig;
-	nodo() {
+	nodoP *sig;
+	nodoP() {
 		this->buscar = "";
 		this->reemplazar = "";
 		this->sig = 0;
@@ -22,7 +22,7 @@ public:
 };
 class ListaSimple {
 public:
-	nodo* primero;
+	nodoP* primero;
 	ListaSimple() {
 		primero = 0;
 	}
@@ -30,23 +30,16 @@ public:
 		return primero == 0;
 	}
 	void insertarOrdenadaBuscar(char buscar, string reemplazar) {
-		/*nodo* nuevo = new nodo();
+		nodoP* nuevo = new nodoP();
+		//cout<< buscar.length();
 		if (vacia()) {
 			primero = nuevo;
 		}
 		else
 		{
-			nodo* aux = primero;
+			nodoP* aux = primero;
 			
-			int c = buscar.length();
-			int d = c + 1;
-			//char* a = buscar;
-			const char* a = "hsd";
-			cout << a[1]<<endl;
-			//strcpy(a, buscar.c_str());
-			
-			
-			while (aux->sig != 0) {
+		/*	while (aux->sig != 0) {
 				char b[aux->buscar.size];
 				for (int i = 0; i < buscar.size; i++) {
 					if (strcoll(a[i], b[i]) < 0) {//a b inserta
@@ -54,7 +47,7 @@ public:
 						primero = nuevo;
 						primero->setBuscarReemplazar(buscar, reemplazar);
 						aux->sig = 0;
-					}if (strcoll(a[i], b[i]) > 0) {//b a cambia de nodo
+					}if (strcoll(a[i], b[i]) > 0) {//b a cambia de nodoP
 						aux = aux->sig;
 						i = buscar.size;
 					}
@@ -63,14 +56,14 @@ public:
 					}
 				}
 				
-			}
+			}*/
 			
 			
 		
-		}*/
+		}
 	}
 	void print() {
-		nodo* aux = primero;
+		nodoP* aux = primero;
 		while (aux->sig != 0) {
 			cout << aux->buscar << endl;
 			aux = aux->sig;

@@ -1,39 +1,42 @@
 #include <iostream>
 #include <string.h>
-
+#include <fstream>
 
 
 using namespace std;
+static int posinicio = -1;
+static int posfinal = -1;
 
-class nodo {
+class Nodo {
 public:
 	char letra;
-	nodo* sig;
-	nodo* ant;
-	
-	nodo(char letra) {
+	Nodo* sig;
+	Nodo* ant;
+
+	Nodo(char letra) {
 		this->letra = letra;
 		this->ant = 0;
 		this->sig = 0;
-		
-	};
+
+	}
 };
 class ListaDoble {
 public:
-	nodo* ultimo;
-	nodo* primero;
+	Nodo* ultimo;
+	Nodo* primero;
 	int tam;
 	ListaDoble() {
 		this->ultimo = 0;
 		this->primero = 0;
-		
-	}
+
+	};
+
 	bool vacia() {
 		return primero == 0;
 	}
-	
+
 	void insertar(char letra) {
-		nodo* nuevo = new nodo(letra);
+		Nodo* nuevo = new Nodo(letra);
 		if (vacia()) {
 			primero = nuevo;
 			ultimo = nuevo;
@@ -46,10 +49,11 @@ public:
 			tam++;
 		}
 	}
+
 	//insertar a partir de una posición
 	void insertarPorPosicion(char letra, int posicion) {
-		nodo* nuevo = new nodo(letra);
-		nodo* aux = primero;
+		Nodo* nuevo = new Nodo(letra);
+		Nodo* aux = primero;
 		for (int i = 0; i < posicion; i++) {
 			if (i == posicion) {
 				aux->ant->sig = nuevo;
@@ -57,104 +61,121 @@ public:
 				nuevo->ant = aux->ant;
 				aux->ant = nuevo;
 				tam++;
-				}
+			}
 			else {
 				aux = aux->sig;
 			}
 		}
-
-		
-
+	}
+	Nodo* buscarLD(char s, int cont){
+		Nodo * retornar = 0;
+		char f = 'u';
+		bool encontrado = true;
+		int i = 0;
+		Nodo *aux = primero;
+		for(int j =0; j<tam+1; j++){
+			if(j==cont){
+				j=tam;
+			}
+			else{
+				aux = aux->sig;
+			}
+		}
+		while(i<tam && encontrado){
+			if( aux->letra== s){
+				if(posinicio<0)
+					posinicio = cont;
+				if(aux->sig == 0)
+					posfinal = cont;
+				retornar = aux;
+				aux = aux->sig;	
+				
+				i= tam;
+			}else{
+				while(aux->sig != 0 || aux->letra == ' '){
+					aux = aux->sig;
+					
+				}
+				aux = aux->sig;
+			}
+			
+		}
+		return retornar;
 	}
 	void print() {
 		if (vacia())
 			cout << "Lista Vacia";
 		else {
-			nodo* aux = primero;
+			Nodo* aux = primero;
 
 			while (aux->sig != 0) {
 				cout << aux->letra << endl;
 				aux = aux->sig;
 			}
+			cout << aux->letra << endl;
 		}
-		
+
 	}
-	int posinicio = -1;
-	int posfinal = -1;
-	nodo* buscar(string s, nodo* aux1, int cont) {
-		bool var = true;
-		nodo* aux = aux1;
-		int cont1 = cont;
-		while (var) {
-			for (auto x : s) {
-				if (aux->letra == x) {
-					cont1++;
-					if (posinicio < 0)
-						posinicio = cont1;
-					if (aux->sig == 0 || aux->sig->letra == ' ')
-						posfinal = cont1;
+
+	void reemplazar(string buscada, char reemplazar) {
+		int b = buscada.size();
+		
+		Nodo *aux = primero;
+		
+			for(int i =0; i<tam; i++){
+				if(i== posinicio && i<=posfinal){
+					aux->letra = reemplazar;
 					aux = aux->sig;
-				}
-				else {
-					while (aux->sig != 0) {
-						if (aux->letra != ' ') {
-							aux = aux->sig;
-							cont1++;
-						}
-						else {
-							aux = aux->sig;
-							buscar(s, aux, cont1);
-							break;
-						}
-					}
-					if (aux->sig == 0) {
-						var = false;
-					}
+					i= tam;
+					
 				}
 			}
-			var = false;
-			aux = primero;
-			for (int i = 0; i < tam + 1; i++) {
-				if (posinicio == i) {
-					return aux;
-				}
-				else {
-					if (aux->sig != 0)
-						aux = aux->sig;
-				}
-			}
-		}
-	}
-	void r(string buscar, string reemplazar, int inicio, int final, nodo*aux) {
-		if (buscar.length() < reemplazar.length()) {
-			cout << "1";
-		}
-		else if (buscar.length() > reemplazar.length()) {
-			cout << "2";
-		}
-		else {
-			cout << "3";
-		}
-	}
-	void reemplazar(string s, nodo* aux1, int cont) {
-
-		nodo* s1 = buscar(s, aux1, cont);
-		if (posinicio >= 0) {
-			cout << "Valor encontrado: ";
-			cout << s1->letra << endl;
-		}
-		else {
-			cout << "No se encuentra coincidencia ";
-		}
-
-	}
-	nodo* buscarpos(int pos) {
-		nodo* aux = primero;
-		/*int p;
-		while (p != pos) {
-			aux = aux->sig;
-		}*/
+			posinicio++;
 		
-		return aux;
+	}
+	
+	void reporte() {
+		ofstream reporte;
+		reporte.open("Reporte.dot", ios::out);
+		if (reporte.fail()) {
+			cout << "No se creo el reporte" << endl;
+			exit(1);
+		}
+		else {
+			reporte << "digraph G{" << endl;
+			reporte << "rankdir = LR;" << endl;
+			reporte << "node[shape = record]; " << endl;
+			Nodo* aux = primero;
+			for (int i = 0; i < tam + 1; i++) {
+				reporte << i + "[label=\"{<ref>|<data>" << aux->letra + "|}\"] ";
+				reporte << i + "->" << i + 1 << endl;
+
+			}
+			reporte << "}" << endl;
+			reporte.close();
+			string str = "gcc";
+			str = str + "-o reporte.out imagen.jpg";
+			const char* command = str.c_str();
+			system(command);
+			system("./ reporte.out");
+			//ios.system("dot-Tjpg Reporte.dot -o imagen.jpg");
+			//system("imagen.jpg");
+		}
+
 	}
 };
+
+
+
+/*int cont = -1;
+int main(){
+
+	ListaDoble *prueba= new ListaDoble();
+prueba->insertar('u');
+prueba->insertar('o');
+prueba->insertar('L');
+prueba->buscar('uoL',cont);
+prueba->reemplazar('u', posinicio, posfinal);
+prueba->print();
+	return 0;
+}*/

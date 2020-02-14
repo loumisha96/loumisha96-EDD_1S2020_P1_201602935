@@ -1,5 +1,10 @@
 ﻿  Skipping vcpkg. (no packages)
+  ListaDoble.cpp
+  ListaSimple.cpp
   P1.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\wincontypes.h(103): warning C4005: 'MOUSE_MOVED': redefinición de macro
-  C:\Users\lourd\Desktop\usac\EDD\P1\packages\Vcpkg.Nuget.1.5.0\vcpkg_bin\installed\x86-windows\include\curses.h(155): note: vea la definición anterior de 'MOUSE_MOVED'
-  P1.vcxproj -> C:\Users\lourd\Desktop\usac\EDD\P1\Debug\P1.exe
+C:\Users\lourd\Desktop\usac\EDD\P1\P1\P1.cpp(94): error C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\ucrt\conio.h(453): note: vea la declaración de 'getch'
+C:\Users\lourd\Desktop\usac\EDD\P1\P1\P1.cpp(111): error C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\ucrt\conio.h(453): note: vea la declaración de 'getch'
+  PilaCambios.cpp
+  Generando código...
