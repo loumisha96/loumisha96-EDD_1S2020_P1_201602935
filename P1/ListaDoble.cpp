@@ -49,6 +49,14 @@ public:
 			tam++;
 		}
 	}
+	void eliminarporPosicion(int pos){
+		Nodo *aux = BuscarPos(pos);
+		while(aux->sig->letra != ' '|| aux->sig != 0){
+			aux->sig = aux->sig->sig;
+			aux->sig->sig->ant = aux;
+		}
+		
+	}
 
 	//insertar a partir de una posición
 	void insertarPorPosicion(char letra, int posicion) {
@@ -117,7 +125,7 @@ public:
 
 	}
 
-	void reemplazar(string buscada, char reemplazar) {
+	void reemplazar(string buscada, char reemplazar, int tambuscada) {
 		int b = buscada.size();
 		
 		Nodo *aux = primero;
@@ -127,12 +135,26 @@ public:
 					aux->letra = reemplazar;
 					aux = aux->sig;
 					i= tam;
-					
+				}
+				else{
+					aux = aux->sig;
 				}
 			}
 			posinicio++;
 		
 	}
+	Nodo* BuscarPos(int pos){
+		Nodo *aux = primero;
+		
+		for(int i=0;i<=tam; i++){
+			if(i==pos){
+				return aux;
+			}
+			else
+				aux = aux->sig;
+		}
+	}
+	
 	
 	void reporte() {
 		ofstream reporte;
@@ -142,40 +164,72 @@ public:
 			exit(1);
 		}
 		else {
-			reporte << "digraph G{" << endl;
-			reporte << "rankdir = LR;" << endl;
-			reporte << "node[shape = record]; " << endl;
+			reporte << "digraph G{\n";
+			reporte << "rankdir = LR;\n";
+			reporte << "node[shape = record]; \n";
 			Nodo* aux = primero;
 			for (int i = 0; i < tam + 1; i++) {
-				reporte << i + "[label=\"{<ref>|<data>" << aux->letra + "|}\"] ";
-				reporte << i + "->" << i + 1 << endl;
+				reporte<<i;
+				reporte<<" [label = \"{<ref> | <data>" ;
+				reporte<<aux->letra;
+				reporte<<" | }\"]\n";
+				if(i+1 > tam){
+					
+					
+					reporte<<(i+1);
+					reporte<<"[label=\"{<data>";
+					reporte<<"null";
+					reporte<<" }\"]\n";
+					reporte<<i;
+					reporte<<"->";
+					reporte<<(i+1);
+					reporte<<"\n";
+					reporte<<(i+1);
+					reporte<<"->";
+					reporte<<i;
+					reporte<<"\n";
+					
+					
+				}
+				else{
+					
+					reporte<<i;
+					reporte<<"->";
+					reporte<<(i+1);
+					reporte<<"\n";
+					reporte<<(i+1);
+					reporte<<"->";
+					reporte<<i;
+					reporte<<"\n";
+					
+				}
+				
+				
+				aux = aux->sig;
 
 			}
-			reporte << "}" << endl;
+			reporte << "}";
 			reporte.close();
-			string str = "gcc";
-			str = str + "-o reporte.out imagen.jpg";
-			const char* command = str.c_str();
-			system(command);
-			system("./ reporte.out");
-			//ios.system("dot-Tjpg Reporte.dot -o imagen.jpg");
-			//system("imagen.jpg");
+			string str = "dot -o imagen.out reporte.dot" ;
+			system("dot -Tpng Reporte.dot -o reporte.png");
+			system(" reporte.png &");
 		}
 
 	}
 };
 
 
-
-/*int cont = -1;
+/*
+int cont = -1;
 int main(){
 
 	ListaDoble *prueba= new ListaDoble();
 prueba->insertar('u');
 prueba->insertar('o');
 prueba->insertar('L');
-prueba->buscar('uoL',cont);
-prueba->reemplazar('u', posinicio, posfinal);
+//prueba->buscarLD('uoL',cont);
+
 prueba->print();
+prueba->reporte();
 	return 0;
 }*/

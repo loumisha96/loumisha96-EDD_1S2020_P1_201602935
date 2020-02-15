@@ -10,12 +10,13 @@
 #endif
 #include "ListaDoble.cpp"
 #include "ListaSimple.cpp"
+#include "PilaCambios.cpp"
 
 using namespace std;
 int cont_ = 0;
 ListaDoble* listaTexto = new ListaDoble();
 ListaSimple* lis = new ListaSimple();
-
+Pila *pilacambios = new Pila();
 void pintarCrear(int x, int y) {
 	system("cls");
 	HANDLE hCon;
@@ -27,6 +28,7 @@ void pintarCrear(int x, int y) {
 	SetConsoleCursorPosition(hCon, pos);
 
 	printf("^w(Buscar y Reemplazar!)      ^c(Reportes)      ^s(Guardar)");
+	
 }
 void pintarCursor(int x, int y) {
 	HANDLE hCon;
@@ -63,53 +65,44 @@ void pintarTexto(int x, int y) {
 	pintarLista();
 }
 
-int main()
-{
-	char entrada = ' ';
-	cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
-	cout << "FACULTAD DE INGENIERIA " << endl;
-	cout << "ESTRUCTURA DE DATOS " << endl;
-	cout << "PRACTICA 1 " << endl;
-	cout << "LOURDES MISHEL LORENZANA OCHOA" << endl;
-	cout << "201602935" << endl;
-	cout << " " << endl;
-	cout << "MENU " << endl;
-	cout << "1. Crear archivo" << endl;
-	cout << "2. Abrir Archivo " << endl;
-	cout << "3. Archivos Recientes " << endl;
-	cout << "4. Salir " << endl;
-	cin >> entrada;
-
+void Case1(char tecla){
 	bool c = true;
-	bool d = true;
-	switch (entrada) {
-		case '1'://  \023
-			pintarCrear(2, 2);
-			pintarCursor(2, 4);
-			char tecla = getch();
+			bool d = true;
+			char busqueda= ' ';
 			string word = "";
-			//entrada = getch();
-			//buscar y reemplazar = '\x17' ctrlw
-			//reportes '1'
-			//guardar = '\x13'
-			
 			while (c) {
 				cin >> tecla;
 				if (tecla == '\x13') {//guarda
 					pintarTexto(2, 2);
 				}//guardar
-				else if (tecla == '1')//
-					cout << "f";
-				else if (tecla == '\x17') {
+				else if (tecla == '\022'){//reportes
 					pintarCrear(2, 2);
-					pintarCursor(2, 4);
+					pintarCursor(2,4);
+					printf("Reportes: 1)Lista   2)Palabras Buscadas  3)Palabras Ordenadas ");
+					cin>>busqueda;
+					switch (busqueda){
+						
+						case '1':
+							listaTexto->reporte();
+							break;
+					}
+						
+					
+				}
+				else if (tecla == '\x17') {//ctrlw
+					pintarCrear(2, 2);
+					pintarCursor(2,4);
 					printf("Buscar y reemplazar: ");
-					char busqueda= ' ';
+					
+					
 					string buscada;
 					string reemplazar= "";
 					char bandera = ' ';
+					int tamReemplazar =0;
 					while (d) {
 						cin >> busqueda;
+						cin.ignore();
+						
 						if(busqueda != ';' && bandera != ';') {
 							if(listaTexto->buscarLD(busqueda, cont_)){
 								word = word + busqueda;
@@ -129,21 +122,75 @@ int main()
 							
 						}
 						else{
-							reemplazar = reemplazar + busqueda;
-							listaTexto->reemplazar(buscada, busqueda);
-							pintarTexto(2,2);
+							tamReemplazar++;
+							int i =0;
+							
+							int tamBuscada= buscada.size();
+							if(tamReemplazar< tamBuscada){
+								reemplazar = reemplazar + busqueda;
+								Nodo *aux = listaTexto->primero;
+								if(listaTexto->BuscarPos(tamReemplazar)->letra != ' '){
+									listaTexto->reemplazar(buscada, busqueda, tamBuscada);
+								}
+								else{
+									listaTexto->eliminarporPosicion(tamReemplazar);
+								}
+								
+							}
+							else if(tamReemplazar>tamBuscada){
+								reemplazar = reemplazar + busqueda;
+								listaTexto->insertarPorPosicion(busqueda, i);
+								i++;
+							}
+							else{
+								reemplazar = reemplazar + busqueda;
+								
+								listaTexto->reemplazar(buscada, busqueda, tamBuscada);
+								pintarTexto(2,2);
+							}
+							
 							
 						}
+						
 						pintarTexto(2,2);
 						//d = false;
 					}
+					pilacambios->pushSearch(buscada, reemplazar);
 				}
 				else
 					listaTexto->insertar(tecla);
 			}
 			pintarTexto(2,2);
 			c = false;
+	
+}
+int main()
+{
+	char entrada = ' ';
+	cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
+	cout << "FACULTAD DE INGENIERIA " << endl;
+	cout << "ESTRUCTURA DE DATOS " << endl;
+	cout << "PRACTICA 1 " << endl;
+	cout << "LOURDES MISHEL LORENZANA OCHOA" << endl;
+	cout << "201602935" << endl;
+	cout << " " << endl;
+	cout << "MENU " << endl;
+	cout << "1. Crear archivo" << endl;
+	cout << "2. Abrir Archivo " << endl;
+	cout << "3. Archivos Recientes " << endl;
+	cout << "4. Salir " << endl;
+	cin >> entrada;
+
+	switch (entrada) {
+		case '1'://  \023
+			pintarCrear(2, 2);
+			pintarCursor(2, 4);
+//			puts("Escriba");
+			char tecla = getch();
+			Case1(tecla);
+			
 			break;
+		
 	}
 
 };
