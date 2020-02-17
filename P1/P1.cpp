@@ -66,14 +66,37 @@ void pintarTexto(int x, int y) {
 }
 
 void Case1(char tecla){
-	bool c = true;
+
+			bool c = true;
 			bool d = true;
-			char busqueda= ' ';
+			char busqueda;
 			string word = "";
 			while (c) {
 				cin >> tecla;
-				if (tecla == '\x13') {//guarda
-					pintarTexto(2, 2);
+				if (tecla == '\023') {//guarda
+					pintarCrear(2, 2);
+					pintarCursor(2,4);
+					printf("Guardar: ");
+					string g;
+					cin.ignore();
+					getline(cin,g);
+					ofstream file;
+					g = g+".txt";
+					file.open(g.c_str(), ios::out);
+					if (listaTexto->vacia())
+						cout << "Lista Vacia";
+					else {
+						Nodo* aux = listaTexto->primero;
+		
+						while (aux->sig != 0) {
+							file << aux->letra;
+							aux = aux->sig;
+						}
+					file<< aux->letra;
+					}
+					file.close();
+				//	ifstream 
+					
 				}//guardar
 				else if (tecla == '\022'){//reportes
 					pintarCrear(2, 2);
@@ -89,7 +112,7 @@ void Case1(char tecla){
 						
 					
 				}
-				else if (tecla == '\x17') {//ctrlw
+				else if (tecla == '\027') {//ctrlw
 					pintarCrear(2, 2);
 					pintarCursor(2,4);
 					printf("Buscar y reemplazar: ");
@@ -98,15 +121,17 @@ void Case1(char tecla){
 					string buscada;
 					string reemplazar= "";
 					char bandera = ' ';
-					int tamReemplazar =0;
+					int tamReemplazar =-1;
 					while (d) {
-						cin >> busqueda;
-						cin.ignore();
+					cin >> busqueda;
+					//	getline(cin, busqueda, '\n');
+						//cin.ignore();
 						
 						if(busqueda != ';' && bandera != ';') {
 							if(listaTexto->buscarLD(busqueda, cont_)){
 								word = word + busqueda;
 								cont_++;
+								posfinal = cont_;
 								d = true;
 							}else{
 								
@@ -130,7 +155,8 @@ void Case1(char tecla){
 								reemplazar = reemplazar + busqueda;
 								Nodo *aux = listaTexto->primero;
 								if(listaTexto->BuscarPos(tamReemplazar)->letra != ' '){
-									listaTexto->reemplazar(buscada, busqueda, tamBuscada);
+									listaTexto->reemplazar(buscada, busqueda, tamReemplazar);
+									listaTexto->print();
 								}
 								else{
 									listaTexto->eliminarporPosicion(tamReemplazar);
@@ -146,7 +172,9 @@ void Case1(char tecla){
 								reemplazar = reemplazar + busqueda;
 								
 								listaTexto->reemplazar(buscada, busqueda, tamBuscada);
-								pintarTexto(2,2);
+								cout<<"Reemplazar";
+								listaTexto->print();
+								//pintarTexto(2,2);
 							}
 							
 							
@@ -157,42 +185,52 @@ void Case1(char tecla){
 					}
 					pilacambios->pushSearch(buscada, reemplazar);
 				}
-				else
-					listaTexto->insertar(tecla);
+				
 			}
 			pintarTexto(2,2);
 			c = false;
 	
 }
 int main()
-{
-	char entrada = ' ';
-	cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
-	cout << "FACULTAD DE INGENIERIA " << endl;
-	cout << "ESTRUCTURA DE DATOS " << endl;
-	cout << "PRACTICA 1 " << endl;
-	cout << "LOURDES MISHEL LORENZANA OCHOA" << endl;
-	cout << "201602935" << endl;
-	cout << " " << endl;
-	cout << "MENU " << endl;
-	cout << "1. Crear archivo" << endl;
-	cout << "2. Abrir Archivo " << endl;
-	cout << "3. Archivos Recientes " << endl;
-	cout << "4. Salir " << endl;
-	cin >> entrada;
-
-	switch (entrada) {
-		case '1'://  \023
+{	int entrada;
+	
+		cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
+		cout << "FACULTAD DE INGENIERIA " << endl;
+		cout << "ESTRUCTURA DE DATOS " << endl;
+		cout << "PRACTICA 1 " << endl;
+		cout << "LOURDES MISHEL LORENZANA OCHOA" << endl;
+		cout << "201602935" << endl;
+		cout << " " << endl;
+		cout << "MENU " << endl;
+		cout << "1. Crear archivo" << endl;
+		cout << "2. Abrir Archivo " << endl;
+		cout << "3. Archivos Recientes " << endl;
+		cout << "4. Salir " << endl;
+		cin >> entrada;	
+		
+		switch (entrada) {
+		case 1://  \023
 			pintarCrear(2, 2);
 			pintarCursor(2, 4);
-//			puts("Escriba");
-			char tecla = getch();
-			Case1(tecla);
+			string tecla;
+			cin.ignore();
+			getline(cin, tecla);
+			int c = tecla.size();
+			for(int i=0; i<=c; i++){
+			listaTexto->insertar(tecla[i]);
+			}
+			pintarTexto(2,1);
+			char opcion= ' ';
+			opcion = getch();
+			
+			Case1(opcion);
 			
 			break;
 		
-	}
-
+		}
+	
+	
+	return 0;
 };
 
 

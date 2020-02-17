@@ -5,7 +5,7 @@
 
 using namespace std;
 static int posinicio = -1;
-static int posfinal = -1;
+static int posfinal;
 
 class Nodo {
 public:
@@ -57,6 +57,7 @@ public:
 		}
 		
 	}
+	
 
 	//insertar a partir de una posición
 	void insertarPorPosicion(char letra, int posicion) {
@@ -93,7 +94,7 @@ public:
 			if( aux->letra== s){
 				if(posinicio<0)
 					posinicio = cont;
-				if(aux->sig == 0)
+				if(aux->sig == 0 || aux->sig->letra == ' ')
 					posfinal = cont;
 				retornar = aux;
 				aux = aux->sig;	
@@ -131,7 +132,7 @@ public:
 		Nodo *aux = primero;
 		
 			for(int i =0; i<tam; i++){
-				if(i== posinicio && i<=posfinal){
+				if(i>= tambuscada && i<=posfinal){
 					aux->letra = reemplazar;
 					aux = aux->sig;
 					i= tam;
@@ -148,6 +149,7 @@ public:
 		
 		for(int i=0;i<=tam; i++){
 			if(i==pos){
+				cout<<aux->letra<<endl;
 				return aux;
 			}
 			else
@@ -218,18 +220,28 @@ public:
 	}
 };
 
-
 /*
+
 int cont = -1;
 int main(){
+ListaDoble *prueba= new ListaDoble();
+string nombre;
+cout<<"ingrese nombre"<<endl;
+getline(cin, nombre);
+cout<<nombre;
+int c = nombre.size();
+for(int i=0; i<=c; i++){
+	prueba->insertar(nombre[i]);
+}
+prueba->print();
 
-	ListaDoble *prueba= new ListaDoble();
+/*	ListaDoble *prueba= new ListaDoble();
 prueba->insertar('u');
 prueba->insertar('o');
 prueba->insertar('L');
 //prueba->buscarLD('uoL',cont);
 
 prueba->print();
-prueba->reporte();
-	return 0;
-}*/
+prueba->reporte();*/
+//	return 0;
+//}*/
