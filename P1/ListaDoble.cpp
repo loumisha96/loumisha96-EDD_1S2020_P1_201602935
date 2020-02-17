@@ -213,7 +213,7 @@ public:
 			reporte << "}";
 			reporte.close();
 			string str = "dot -o imagen.out reporte.dot" ;
-			system("dot -Tpng Reporte.dot -o reporte.png");
+			system("dot -Tpng Reporte.dot -o reporteTexto.png");
 			system(" reporte.png &");
 		}
 

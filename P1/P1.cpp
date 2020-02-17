@@ -11,12 +11,14 @@
 #include "ListaDoble.cpp"
 #include "ListaSimple.cpp"
 #include "PilaCambios.cpp"
+#include "ListaCircular.cpp"
 
 using namespace std;
 int cont_ = 0;
 ListaDoble* listaTexto = new ListaDoble();
 ListaSimple* lis = new ListaSimple();
 Pila *pilacambios = new Pila();
+ListaCircular *listaArchRec = new ListaCircular();
 void pintarCrear(int x, int y) {
 	system("cls");
 	HANDLE hCon;
@@ -66,6 +68,7 @@ void pintarTexto(int x, int y) {
 }
 
 void Case1(char tecla){
+	
 
 			bool c = true;
 			bool d = true;
@@ -108,6 +111,7 @@ void Case1(char tecla){
 						case '1':
 							listaTexto->reporte();
 							break;
+						
 					}
 						
 					
@@ -191,8 +195,19 @@ void Case1(char tecla){
 			c = false;
 	
 }
+void Case2(string g){
+	char cadena[128];
+	ifstream file(g.c_str());
+		
+		while(!file.eof()){
+			file>>cadena;
+			cout<<cadena<<endl;
+		}
+		
+		file.close();
+}
 int main()
-{	int entrada;
+{	int entrada=0;
 	
 		cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
 		cout << "FACULTAD DE INGENIERIA " << endl;
@@ -207,25 +222,48 @@ int main()
 		cout << "3. Archivos Recientes " << endl;
 		cout << "4. Salir " << endl;
 		cin >> entrada;	
+		int c ;
+		char opcion;
+		string tecla;
+		string g;
 		
 		switch (entrada) {
-		case 1://  \023
-			pintarCrear(2, 2);
-			pintarCursor(2, 4);
-			string tecla;
-			cin.ignore();
-			getline(cin, tecla);
-			int c = tecla.size();
-			for(int i=0; i<=c; i++){
-			listaTexto->insertar(tecla[i]);
-			}
-			pintarTexto(2,1);
-			char opcion= ' ';
-			opcion = getch();
-			
-			Case1(opcion);
-			
-			break;
+			case 1://  \023
+				cout<<"caso1";
+				pintarCrear(2, 2);
+				pintarCursor(2, 4);
+				
+				cin.ignore();
+				getline(cin, tecla);
+				c = tecla.size();
+				for(int i=0; i<=c; i++){
+					listaTexto->insertar(tecla[i]);
+				}
+				pintarTexto(2,1);
+				opcion = getch();
+				Case1(opcion);
+				
+				break;
+			case 2:
+				pintarCrear(2, 2);
+				pintarCursor(2,4);
+				printf("Abrir archivo: ");
+				
+				cin.ignore();
+				getline(cin,tecla);
+				g = g+".txt";
+				Case2(g);
+				break;
+			case 3:
+				pintarCrear(2, 2);
+				pintarCursor(2,4);
+				printf("X: Generar reporte de archivos ");
+				cin.ignore();
+				getline(cin, tecla);
+				if(tecla == "x")
+					listaArchRec->reporte();
+				main();
+				break;
 		
 		}
 	
