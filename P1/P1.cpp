@@ -261,8 +261,13 @@ int main()
 				cin.ignore();
 				getline(cin, tecla);
 				if(tecla == "x")
+				//	listaArchRec->insertar("sdf1","lkjsdls");
+				//	listaArchRec->insertar("sdf2","lkjsdls");
+				//	listaArchRec->insertar("sdf3","lkjsdls");
+				//	listaArchRec->print();
 					listaArchRec->reporte();
-				main();
+					
+				//main();
 				break;
 		
 		}
