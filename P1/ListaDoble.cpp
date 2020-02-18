@@ -39,27 +39,40 @@ public:
 		Nodo* nuevo = new Nodo(letra);
 		if (vacia()) {
 			primero = nuevo;
-			ultimo = nuevo;
+			//ultimo = nuevo;
 			tam = 0;
 		}
 		else {
-			ultimo->sig = nuevo;
-			nuevo->ant = ultimo;
-			ultimo = nuevo;
+			Nodo *aux= primero;
+			while(aux->sig != 0){
+				aux = aux->sig;
+			}
+			aux->sig = nuevo;
+			nuevo->ant = aux;
+			
 			tam++;
 		}
 	}
-	void eliminarporPosicion(int pos){
+/*	void eliminarporPosicion(int pos){
 		Nodo *aux = BuscarPos(pos);
 		while(aux->sig->letra != ' '|| aux->sig != 0){
 			aux->sig = aux->sig->sig;
 			aux->sig->sig->ant = aux;
 		}
 		
-	}
-	
-
+	}*/
 	//insertar a partir de una posición
+	void reemplazar(Nodo *inicio, Nodo *nuevo, bool cabeza){
+		if(cabeza){
+			primero = nuevo;
+		}
+		if(inicio->ant != 0){
+			inicio->ant->sig= nuevo;
+		}
+		nuevo->ant= inicio->ant;
+		nuevo->sig = inicio;
+		inicio->ant = nuevo;
+	}
 	void insertarPorPosicion( char letra, int posicion) {
 		Nodo* nuevo = new Nodo(letra);
 		Nodo* aux = primero;
@@ -76,86 +89,68 @@ public:
 			}
 		}
 	}
-	Nodo* buscarLD(char s, int cont){
-		Nodo * retornar = 0;
-		char f = 'u';
-		bool encontrado = true;
-		int i = 0;
-		Nodo *aux = primero;
-		for(int j =0; j<tam+1; j++){
-			if(j==cont){
-				j=tam;
-			}
-			else{
-				aux = aux->sig;
-			}
+	void eliminar(Nodo*inicio, int cantidad, string reemplazo){
+		bool cabeza = false;
+		if(inicio==primero){
+			cabeza = true;
 		}
-		while(i<tam && encontrado){
-			if( aux->letra== s){
-				if(posinicio<0)
-					posinicio = cont;
-				if(aux->sig == 0 || aux->sig->letra == ' ')
-					posfinal = cont;
-				retornar = aux;
-				aux = aux->sig;	
-				
-				i= tam;
-			}else{
-				while(aux->sig != 0 || aux->letra == ' '){
-					aux = aux->sig;
-					
-				}
-				aux = aux->sig;
-			}
+		Nodo *empieza = inicio->ant;
+		Nodo *aux = inicio;
+		for(int i = 0; i< cantidad; i++){
+			aux= aux->sig;
+		}
+		if (cabeza){
+			primero = aux;
+		}
+		if(!cabeza){
+			empieza->sig= aux;
 			
 		}
-		return retornar;
+		aux->ant = empieza;
+		Nodo *inicio_reemplazo= aux;
+		for(int i = 0; i<reemplazo.size(); i++){
+			Nodo* nuevo = new Nodo(reemplazo[i]);
+			reemplazar(inicio_reemplazo,nuevo, cabeza);
+			cabeza= false;
+		}
 	}
 	void print() {
 		if (vacia())
 			cout << "Lista Vacia";
 		else {
-			Nodo* aux = primero;
-
-			while (aux->sig != 0) {
-				cout << aux->letra << endl;
-				aux = aux->sig;
-			}
-			cout << aux->letra << endl;
-		}
-
-	}
-
-	void reemplazar(string buscada, char reemplazar, int tambuscada) {
-		int b = buscada.size();
-		
-		Nodo *aux = primero;
-		
-			for(int i =0; i<tam; i++){
-				if(i>= tambuscada && i<=posfinal){
-					aux->letra = reemplazar;
-					aux = aux->sig;
-					i= tam;
-				}
-				else{
-					aux = aux->sig;
-				}
-			}
-			posinicio++;
-		
-	}
-	Nodo* BuscarPos(int pos){
-		Nodo *aux = primero;
-		
-		for(int i=0;i<=tam; i++){
-			if(i==pos){
+			Nodo *aux= primero;
+			while(aux != 0){
 				cout<<aux->letra;
-				return aux;
+				aux= aux->sig;
 			}
-			else
-				aux = aux->sig;
+			
 		}
+
 	}
+	void buscar(string palabra, int longitud, Nodo*actual, string reemplazo){
+		
+		Nodo *inicio =actual;
+		for(int i = 0; i<longitud; i++){
+			if(actual->letra == palabra[i]){
+				if(i==(longitud-1)&&(actual->sig->letra==' ')||actual->sig == primero){
+					eliminar(inicio, longitud, reemplazo);
+				}
+				actual = actual->sig;
+			}else{
+				break;
+			}
+		}
+		
+		if(actual->sig == 0){
+			return;
+		}
+		buscar(palabra, longitud, actual->sig, reemplazo);
+	}
+	void buscarReemplazar(string palabra, string reemplazo){
+		int cantidad = palabra.size();
+		buscar(palabra, cantidad,primero, reemplazo);
+	}
+	
 	
 	
 	void reporte() {

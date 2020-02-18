@@ -42,20 +42,7 @@ void pintarCursor(int x, int y) {
 	SetConsoleCursorPosition(hCon, posCursor);
 
 }
-void pintarLista() {
-	Nodo* aux = listaTexto->primero;
-	if(listaTexto->vacia()){
-		cout<<"Lista Vacia"<<endl;
-	}else{
-		while (aux->sig != 0) {
-			cout << aux->letra;
-			aux = aux->sig;
-		}
-		cout << aux->letra << endl;
-		pintarCursor(2, 2);
-	}
-	
-}
+
 void pintarTexto(int x, int y) {
 	system("cls");
 	HANDLE hCon;
@@ -70,18 +57,41 @@ void pintarTexto(int x, int y) {
 	pos.X = x;
 	pos.Y = y + 1;
 	SetConsoleCursorPosition(hCon, pos);
-	pintarLista();
+	listaTexto->print();
 }
 
+void rem1(string var){
+	int v = var.size();
+	string b;
+	string r;
+	bool bandera=false;
+	for(int i=0; i<v; i++){
+		if( var[i] !=';' && bandera== false){
+			b= b+var[i];
+			
+				
+		}else{
+			
+			if(var[i]== ';'){
+				bandera =true;
+			}
+			else{
+				r= r+var[i];
+			}
+			
+		}
+			
+	}
+	listaTexto->buscarReemplazar(b,r);
+	listaTexto->print();
+} 
 void Case1(char tecla){
 	
 
 			bool c = true;
-			bool d = true;
+			
 			char busqueda;
-			string word = "";
-			string buscada;
-			string reemplazar= "";
+			
 			while (c) {
 				cin >> tecla;
 				if (tecla == '\023') {//guarda
@@ -119,6 +129,9 @@ void Case1(char tecla){
 						case '1':
 							listaTexto->reporte();
 							break;
+						case '2':
+							pilacambios->reporte();
+							break;
 						
 					}
 						
@@ -128,67 +141,14 @@ void Case1(char tecla){
 					pintarCrear(2, 2);
 					pintarCursor(2,4);
 					printf("Buscar y reemplazar: ");
-					char bandera = ' ';
-					int tamReemplazar =0;
-					
-					while (d) {
-					cin >> busqueda;
-						Nodo *aux = listaTexto->primero;
-						while(aux->sig!=0){
-							if(busqueda != ';' && bandera != ';') {
-							if(listaTexto->buscarLD(busqueda, cont_)){//va comparando si coincide caracter por caracter
-								aux=listaTexto->buscarLD(busqueda, cont_);
-								word = word + busqueda;
-								cont_++;
-								posfinal = cont_;
-								d = true;
-							}else{
-								
-								while(aux->sig!=0 || aux->sig->letra!= ' '){
-									aux = aux->sig;
-								}
-								if(aux->sig==0){
-									d=false;
-								}
-								else if(aux->sig->letra ==' ' ){
-									d= true;
-								}
-							}
-						}
-						else if(bandera != ';'){
-							bandera = busqueda;//si- bandera es igual a ; lo que sigue es lo que hay que reemplazar
-							buscada = word;
-							
-							d = true;
-						}
-						else if(busqueda =='\030'){
-							d= false;
-							//Case1(busqueda);
-						}
-						else{
-							tamReemplazar++;
-							int i =0;
-							int tamBuscada= buscada.size();
-							if(tamReemplazar>tamBuscada){//cuando la palabra buscada es menor a la que se va a reemplazar 
-								reemplazar = reemplazar + busqueda;
-								listaTexto->insertarPorPosicion(busqueda, i);//se inserta un nuevo nodo despues de la posicion indicada
-								i++;
-							}
-							else{//cuando estan en la misma posicion
-								reemplazar = reemplazar + busqueda;
-								listaTexto->reemplazar(buscada, busqueda, tamReemplazar-1);
-								cout<<"Reemplazar";
-								listaTexto->print();
-							}
-							
-							
-						}
-						
-						}
-						
-						pintarTexto(2,2);
-						//d = false;
-					}
+					string var;
+					cin.ignore();
+					getline(cin, var);
+					rem1(var);
+					//cin.ignore();
+					cin>>tecla;
+					Case1(tecla);
+					//rem(busqueda);
 					
 				}
 				else if(tecla== '\030'){
@@ -203,6 +163,7 @@ void Case1(char tecla){
 			c = false;
 	
 }
+
 void Case2(string g){
 	
 	char cadena[128];
@@ -260,16 +221,17 @@ int main()
 					c = tecla.size();
 					for(int i=0; i<=c; i++){
 						listaTexto->insertar(tecla[i]);
-						pintarTexto(2,1);
+						//pintarTexto(2,1);
 					}
 				}
+				
 				opcion = getch();
 				if(opcion == '\030')
 					main();
 				else
 					Case1(opcion);
 			
-				
+				pintarTexto(2,1);
 				break;
 			case 2:
 				pintarCrear(2, 2);
