@@ -14,12 +14,6 @@ public:
 		this->sig = 0;
 	};
 	
-/*	string getNombre() {
-		return this->nombre;
-	}
-	string getRuta() {
-		return this->ruta;
-	}*/
 };
 class ListaCircular {
 public: 
@@ -89,14 +83,8 @@ public:
 					reporte<<"->";
 					reporte<<(i+1);
 					reporte<<"\n";
-					
-					
-					
 				}
-				
-				
 				aux = aux->sig;
-
 			}	
 			reporte << "}";
 			reporte.close();

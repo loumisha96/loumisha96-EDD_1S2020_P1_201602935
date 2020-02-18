@@ -19,6 +19,7 @@ ListaDoble* listaTexto = new ListaDoble();
 ListaSimple* lis = new ListaSimple();
 Pila *pilacambios = new Pila();
 ListaCircular *listaArchRec = new ListaCircular();
+
 void pintarCrear(int x, int y) {
 	system("cls");
 	HANDLE hCon;
@@ -43,12 +44,17 @@ void pintarCursor(int x, int y) {
 }
 void pintarLista() {
 	Nodo* aux = listaTexto->primero;
-	while (aux->sig != 0) {
-		cout << aux->letra;
-		aux = aux->sig;
+	if(listaTexto->vacia()){
+		cout<<"Lista Vacia"<<endl;
+	}else{
+		while (aux->sig != 0) {
+			cout << aux->letra;
+			aux = aux->sig;
+		}
+		cout << aux->letra << endl;
+		pintarCursor(2, 2);
 	}
-	cout << aux->letra << endl;
-	pintarCursor(2, 2);
+	
 }
 void pintarTexto(int x, int y) {
 	system("cls");
@@ -74,6 +80,8 @@ void Case1(char tecla){
 			bool d = true;
 			char busqueda;
 			string word = "";
+			string buscada;
+			string reemplazar= "";
 			while (c) {
 				cin >> tecla;
 				if (tecla == '\023') {//guarda
@@ -120,96 +128,106 @@ void Case1(char tecla){
 					pintarCrear(2, 2);
 					pintarCursor(2,4);
 					printf("Buscar y reemplazar: ");
-					
-					
-					string buscada;
-					string reemplazar= "";
 					char bandera = ' ';
-					int tamReemplazar =-1;
+					int tamReemplazar =0;
+					
 					while (d) {
 					cin >> busqueda;
-					//	getline(cin, busqueda, '\n');
-						//cin.ignore();
-						
-						if(busqueda != ';' && bandera != ';') {
-							if(listaTexto->buscarLD(busqueda, cont_)){
+						Nodo *aux = listaTexto->primero;
+						while(aux->sig!=0){
+							if(busqueda != ';' && bandera != ';') {
+							if(listaTexto->buscarLD(busqueda, cont_)){//va comparando si coincide caracter por caracter
+								aux=listaTexto->buscarLD(busqueda, cont_);
 								word = word + busqueda;
 								cont_++;
 								posfinal = cont_;
 								d = true;
 							}else{
 								
-								d = false;
+								while(aux->sig!=0 || aux->sig->letra!= ' '){
+									aux = aux->sig;
+								}
+								if(aux->sig==0){
+									d=false;
+								}
+								else if(aux->sig->letra ==' ' ){
+									d= true;
+								}
 							}
-							
 						}
 						else if(bandera != ';'){
-							bandera = busqueda;
+							bandera = busqueda;//si- bandera es igual a ; lo que sigue es lo que hay que reemplazar
 							buscada = word;
 							
 							d = true;
-							
+						}
+						else if(busqueda =='\030'){
+							d= false;
+							//Case1(busqueda);
 						}
 						else{
 							tamReemplazar++;
 							int i =0;
-							
 							int tamBuscada= buscada.size();
-							if(tamReemplazar< tamBuscada){
+							if(tamReemplazar>tamBuscada){//cuando la palabra buscada es menor a la que se va a reemplazar 
 								reemplazar = reemplazar + busqueda;
-								Nodo *aux = listaTexto->primero;
-								if(listaTexto->BuscarPos(tamReemplazar)->letra != ' '){
-									listaTexto->reemplazar(buscada, busqueda, tamReemplazar);
-									listaTexto->print();
-								}
-								else{
-									listaTexto->eliminarporPosicion(tamReemplazar);
-								}
-								
-							}
-							else if(tamReemplazar>tamBuscada){
-								reemplazar = reemplazar + busqueda;
-								listaTexto->insertarPorPosicion(busqueda, i);
+								listaTexto->insertarPorPosicion(busqueda, i);//se inserta un nuevo nodo despues de la posicion indicada
 								i++;
 							}
-							else{
+							else{//cuando estan en la misma posicion
 								reemplazar = reemplazar + busqueda;
-								
-								listaTexto->reemplazar(buscada, busqueda, tamBuscada);
+								listaTexto->reemplazar(buscada, busqueda, tamReemplazar-1);
 								cout<<"Reemplazar";
 								listaTexto->print();
-								//pintarTexto(2,2);
 							}
 							
 							
 						}
 						
+						}
+						
 						pintarTexto(2,2);
 						//d = false;
 					}
-					pilacambios->pushSearch(buscada, reemplazar);
+					
+				}
+				else if(tecla== '\030'){
+					
 				}
 				
 			}
+		//	pilacambios->pushSearch(buscada, reemplazar);
+		//	pilacambios->print();
+		  //  pilacambios->reporte();
 			pintarTexto(2,2);
 			c = false;
 	
 }
 void Case2(string g){
+	
 	char cadena[128];
-	ifstream file(g.c_str());
-		
+	ifstream file(g.c_str(), ios::app);
+	
+		listaArchRec->insertar(g,"rut");
+		if(!file.fail()){
+			file.getline(cadena,128,'\n');
+		}
 		while(!file.eof()){
-			file>>cadena;
 			cout<<cadena<<endl;
+			file.getline(cadena,128, '\n');
+			
 		}
 		
 		file.close();
 }
+
+
 int main()
-{	int entrada=0;
-	
-		cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
+{
+
+		system("cls");
+		int entrada=0;
+     	cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
 		cout << "FACULTAD DE INGENIERIA " << endl;
 		cout << "ESTRUCTURA DE DATOS " << endl;
 		cout << "PRACTICA 1 " << endl;
@@ -225,23 +243,32 @@ int main()
 		int c ;
 		char opcion;
 		string tecla;
-		string g;
+		string g="";
 		
 		switch (entrada) {
-			case 1://  \023
-				cout<<"caso1";
+			case 1:
+			
+				
 				pintarCrear(2, 2);
 				pintarCursor(2, 4);
 				
 				cin.ignore();
 				getline(cin, tecla);
-				c = tecla.size();
-				for(int i=0; i<=c; i++){
-					listaTexto->insertar(tecla[i]);
+				if(tecla == "\030")
+					main();
+				else{
+					c = tecla.size();
+					for(int i=0; i<=c; i++){
+						listaTexto->insertar(tecla[i]);
+						pintarTexto(2,1);
+					}
 				}
-				pintarTexto(2,1);
 				opcion = getch();
-				Case1(opcion);
+				if(opcion == '\030')
+					main();
+				else
+					Case1(opcion);
+			
 				
 				break;
 			case 2:
@@ -251,8 +278,13 @@ int main()
 				
 				cin.ignore();
 				getline(cin,tecla);
-				g = g+".txt";
-				Case2(g);
+				if(tecla == "\030"){
+					main();
+				}else{
+						
+					g = tecla+".txt";
+					Case2(g);
+				}
 				break;
 			case 3:
 				pintarCrear(2, 2);
@@ -261,13 +293,16 @@ int main()
 				cin.ignore();
 				getline(cin, tecla);
 				if(tecla == "x")
-				//	listaArchRec->insertar("sdf1","lkjsdls");
-				//	listaArchRec->insertar("sdf2","lkjsdls");
-				//	listaArchRec->insertar("sdf3","lkjsdls");
-				//	listaArchRec->print();
+					
 					listaArchRec->reporte();
 					
-				//main();
+				else if(tecla == "\030"){
+					main();
+				}
+				break;
+			case 4:
+				cout<<"EL PROGRAMA SE HA CERRADO"<<endl;
+				exit(1);
 				break;
 		
 		}

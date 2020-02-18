@@ -60,15 +60,15 @@ public:
 	
 
 	//insertar a partir de una posición
-	void insertarPorPosicion(char letra, int posicion) {
+	void insertarPorPosicion( char letra, int posicion) {
 		Nodo* nuevo = new Nodo(letra);
 		Nodo* aux = primero;
-		for (int i = 0; i < posicion; i++) {
+		for (int i = 0; i <= posicion; i++) {
 			if (i == posicion) {
-				aux->ant->sig = nuevo;
-				nuevo->sig = aux;
-				nuevo->ant = aux->ant;
-				aux->ant = nuevo;
+				aux->sig = nuevo;
+				nuevo->sig = aux->sig->sig;
+				nuevo->ant = aux;
+				aux->sig->ant = nuevo;
 				tam++;
 			}
 			else {
@@ -149,7 +149,7 @@ public:
 		
 		for(int i=0;i<=tam; i++){
 			if(i==pos){
-				cout<<aux->letra<<endl;
+				cout<<aux->letra;
 				return aux;
 			}
 			else
@@ -176,8 +176,6 @@ public:
 				reporte<<aux->letra;
 				reporte<<" | }\"]\n";
 				if(i+1 > tam){
-					
-					
 					reporte<<(i+1);
 					reporte<<"[label=\"{<data>";
 					reporte<<"null";

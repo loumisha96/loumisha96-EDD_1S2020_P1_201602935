@@ -1,0 +1,13 @@
+digraph G{
+rankdir = LR;
+node[shape = record]; 
+0 [label = "{<ref> | <data>Palabra Buscada: buscar3\n Palabra Remplazada: reemplazar\n Estado: 0\n Palabra: Null\n Posicion: 0 | }"]
+1[label="{<data>null }"]
+0->1
+1 [label = "{<ref> | <data>Palabra Buscada: buscar2\n Palabra Remplazada: reemplazar\n Estado: 0\n Palabra: Null\n Posicion: 0 | }"]
+2[label="{<data>null }"]
+1->2
+2 [label = "{<ref> | <data>Palabra Buscada: buscar1\n Palabra Remplazada: reemplazar\n Estado: 0\n Palabra: Null\n Posicion: 0 | }"]
+3[label="{<data>null }"]
+2->3
+}
