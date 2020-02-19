@@ -53,14 +53,7 @@ public:
 			tam++;
 		}
 	}
-/*	void eliminarporPosicion(int pos){
-		Nodo *aux = BuscarPos(pos);
-		while(aux->sig->letra != ' '|| aux->sig != 0){
-			aux->sig = aux->sig->sig;
-			aux->sig->sig->ant = aux;
-		}
-		
-	}*/
+
 	//insertar a partir de una posición
 	void reemplazar(Nodo *inicio, Nodo *nuevo, bool cabeza){
 		if(cabeza){
@@ -155,7 +148,7 @@ public:
 	
 	void reporte() {
 		ofstream reporte;
-		reporte.open("Reporte.dot", ios::out);
+		reporte.open("reporte.dot", ios::out);
 		if (reporte.fail()) {
 			cout << "No se creo el reporte" << endl;
 			exit(1);
@@ -165,16 +158,22 @@ public:
 			reporte << "rankdir = LR;\n";
 			reporte << "node[shape = record]; \n";
 			Nodo* aux = primero;
-			for (int i = 0; i < tam + 1; i++) {
+			for (int i = 0; i < tam; i++) {
 				reporte<<i;
 				reporte<<" [label = \"{<ref> | <data>" ;
-				reporte<<aux->letra;
+				if(aux->letra != '\000 '){
+					reporte<<aux->letra;
+				}
+				else{
+					reporte<<"_";
+				}
+				
 				reporte<<" | }\"]\n";
-				if(i+1 > tam){
-					reporte<<(i+1);
+				if(i+1 < tam){
+					/*reporte<<(i+1);
 					reporte<<"[label=\"{<data>";
 					reporte<<"null";
-					reporte<<" }\"]\n";
+					reporte<<" }\"]\n";*/
 					reporte<<i;
 					reporte<<"->";
 					reporte<<(i+1);
@@ -188,14 +187,14 @@ public:
 				}
 				else{
 					
-					reporte<<i;
+					/*reporte<<i;
 					reporte<<"->";
 					reporte<<(i+1);
 					reporte<<"\n";
 					reporte<<(i+1);
 					reporte<<"->";
 					reporte<<i;
-					reporte<<"\n";
+					reporte<<"\n";*/
 					
 				}
 				
@@ -205,36 +204,25 @@ public:
 			}
 			reporte << "}";
 			reporte.close();
-			string str = "dot -o imagen.out reporte.dot" ;
-			system("dot -Tpng Reporte.dot -o reporteTexto.png");
-			system(" reporte.png &");
+			//string str = "dot -o imagen.out reporte.dot" ;
+			system("dot -Tpng reporte.dot -o reporteTexto.png");
+			system("reporteTexto.png &");
 		}
 
 	}
 };
 
-/*
 
+/*
 int cont = -1;
 int main(){
 ListaDoble *prueba= new ListaDoble();
-string nombre;
-cout<<"ingrese nombre"<<endl;
-getline(cin, nombre);
-cout<<nombre;
-int c = nombre.size();
-for(int i=0; i<=c; i++){
-	prueba->insertar(nombre[i]);
-}
-prueba->print();
 
-/*	ListaDoble *prueba= new ListaDoble();
 prueba->insertar('u');
 prueba->insertar('o');
 prueba->insertar('L');
-//prueba->buscarLD('uoL',cont);
-
+prueba->insertar(' ');
 prueba->print();
-prueba->reporte();*/
-//	return 0;
-//}*/
+prueba->reporte();
+	return 0;
+}*/

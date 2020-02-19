@@ -136,7 +136,8 @@ public:
 		}
 	}
 };
-/*int main(){
+/*
+int main(){
 	Pila *pc= new Pila();
 	pc->pushSearch("buscar", "reemplazar");
 	pc->pushSearch("buscar1", "reemplazar");

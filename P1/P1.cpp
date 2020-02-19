@@ -30,7 +30,7 @@ void pintarCrear(int x, int y) {
 	pos.Y = y;
 	SetConsoleCursorPosition(hCon, pos);
 
-	printf("^w(Buscar y Reemplazar!)      ^c(Reportes)      ^s(Guardar)");
+	printf("^w(Buscar y Reemplazar!)      ^r(Reportes)      ^s(Guardar)");
 	
 }
 void pintarCursor(int x, int y) {
@@ -53,7 +53,7 @@ void pintarTexto(int x, int y) {
 	pos.Y = y;
 	SetConsoleCursorPosition(hCon, pos);
 
-	printf("^w(Buscar y Reemplazar!)      ^c(Reportes)      ^s(Guardar)");
+	printf("^w(Buscar y Reemplazar!)      ^r(Reportes)      ^s(Guardar)");
 	pos.X = x;
 	pos.Y = y + 1;
 	SetConsoleCursorPosition(hCon, pos);
@@ -83,6 +83,8 @@ void rem1(string var){
 			
 	}
 	listaTexto->buscarReemplazar(b,r);
+	pilacambios->pushSearch(b,r);
+//	lis->insertarOrdenadaBuscar(b,r);
 	listaTexto->print();
 } 
 void Case1(char tecla){
@@ -104,6 +106,7 @@ void Case1(char tecla){
 					ofstream file;
 					g = g+".txt";
 					file.open(g.c_str(), ios::out);
+					listaArchRec->insertar(g,"Ruta ");
 					if (listaTexto->vacia())
 						cout << "Lista Vacia";
 					else {
@@ -116,7 +119,7 @@ void Case1(char tecla){
 					file<< aux->letra;
 					}
 					file.close();
-				//	ifstream 
+					Case1(tecla);
 					
 				}//guardar
 				else if (tecla == '\022'){//reportes
@@ -145,20 +148,14 @@ void Case1(char tecla){
 					cin.ignore();
 					getline(cin, var);
 					rem1(var);
-					//cin.ignore();
 					cin>>tecla;
 					Case1(tecla);
-					//rem(busqueda);
 					
-				}
-				else if(tecla== '\030'){
 					
 				}
 				
+				
 			}
-		//	pilacambios->pushSearch(buscada, reemplazar);
-		//	pilacambios->print();
-		  //  pilacambios->reporte();
 			pintarTexto(2,2);
 			c = false;
 	
@@ -168,24 +165,24 @@ void Case2(string g){
 	
 	char cadena[128];
 	ifstream file(g.c_str(), ios::app);
-	
-		listaArchRec->insertar(g,"rut");
-		if(!file.fail()){
-			file.getline(cadena,128,'\n');
-		}
-		while(!file.eof()){
-			cout<<cadena<<endl;
-			file.getline(cadena,128, '\n');
-			
-		}
+
+	listaArchRec->insertar(g,"rut");
+	if(!file.fail()){
+		file.getline(cadena,128,'\n');
+	}
+	while(!file.eof()){
+		cout<<cadena<<endl;
+		file.getline(cadena,128, '\n');
 		
-		file.close();
+	}
+	file.close();
 }
 
 
 int main()
-{
+{	
 
+	
 		system("cls");
 		int entrada=0;
      	cout << "UNIVERSIDAD DE SAN CARLOS DE GUATEMALA" << endl;
@@ -201,75 +198,66 @@ int main()
 		cout << "3. Archivos Recientes " << endl;
 		cout << "4. Salir " << endl;
 		cin >> entrada;	
+		
 		int c ;
 		char opcion;
 		string tecla;
 		string g="";
-		
-		switch (entrada) {
-			case 1:
-			
-				
-				pintarCrear(2, 2);
-				pintarCursor(2, 4);
-				
-				cin.ignore();
-				getline(cin, tecla);
-				if(tecla == "\030")
-					main();
-				else{
-					c = tecla.size();
-					for(int i=0; i<=c; i++){
-						listaTexto->insertar(tecla[i]);
-						//pintarTexto(2,1);
+		while(tecla!="\030"){
+			switch (entrada) {
+				case 1:
+					pintarCrear(2, 2);
+					pintarCursor(2, 4);
+					cin.ignore();
+					getline(cin, tecla);
+					if(tecla == "\030")
+						main();
+					else{
+						c = tecla.size();
+						for(int i=0; i<=c; i++){
+							listaTexto->insertar(tecla[i]);
+							//pintarTexto(2,1);
+						}
 					}
-				}
+					
+					opcion = getch();
+					if(opcion == '\030')
+						main();
+					else
+						Case1(opcion);
 				
-				opcion = getch();
-				if(opcion == '\030')
-					main();
-				else
-					Case1(opcion);
-			
-				pintarTexto(2,1);
-				break;
-			case 2:
-				pintarCrear(2, 2);
-				pintarCursor(2,4);
-				printf("Abrir archivo: ");
-				
-				cin.ignore();
-				getline(cin,tecla);
-				if(tecla == "\030"){
-					main();
-				}else{
-						
+					pintarTexto(2,1);
+					break;
+				case 2:
+					pintarCrear(2, 2);
+					pintarCursor(2,4);
+					printf("Abrir archivo: ");
+					cin.ignore();
+					getline(cin,tecla);
 					g = tecla+".txt";
 					Case2(g);
+					cin.ignore();
+					getline(cin,tecla);
+					break;
+				case 3:
+					pintarCrear(2, 2);
+					pintarCursor(2,4);
+					printf("X: Generar reporte de archivos ");
+					cin.ignore();
+					getline(cin, tecla);
+					if(tecla == "x")
+						listaArchRec->reporte();
+					break;
+				case 4:
+					cout<<"EL PROGRAMA SE HA CERRADO"<<endl;
+					exit(1);
+					break;
+			
 				}
-				break;
-			case 3:
-				pintarCrear(2, 2);
-				pintarCursor(2,4);
-				printf("X: Generar reporte de archivos ");
-				cin.ignore();
-				getline(cin, tecla);
-				if(tecla == "x")
-					
-					listaArchRec->reporte();
-					
-				else if(tecla == "\030"){
-					main();
-				}
-				break;
-			case 4:
-				cout<<"EL PROGRAMA SE HA CERRADO"<<endl;
-				exit(1);
-				break;
 		
 		}
-	
-	
+		
+	main();
 	return 0;
 };
 
